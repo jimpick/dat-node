@@ -2,7 +2,8 @@ var assert = require('assert')
 var fs = require('fs')
 var path = require('path')
 var xtend = require('xtend')
-var hyperdrive = require('hyperdrive')
+var hyperdriveLegacy = require('@jimpick/hyperdrive-legacy')
+var hyperdrive = require('@jimpick/hyperdrive') // eslint-disable-line no-unused-vars
 var resolveDatLink = require('dat-link-resolve')
 var debug = require('debug')('dat-node')
 var datStore = require('./lib/storage')
@@ -98,7 +99,7 @@ function createDat (dirOrStorage, opts, cb) {
     })
 
     function createArchive () {
-      archive = hyperdrive(storage, key, opts)
+      archive = hyperdriveLegacy(storage, key, opts)
       archive.on('error', cb)
       archive.ready(function () {
         debug('archive ready. version:', archive.version)
