@@ -35,7 +35,7 @@ test('download: Download with default opts', function (t) {
         })
         var archive = dat.archive
         archive.db.source.on('sync', done)
-        
+
         function done () {
           var st = stats.get()
           t.ok(st.version === archive.version, 'stats version correct')
@@ -43,14 +43,14 @@ test('download: Download with default opts', function (t) {
           helpers.verifyFixtures(t, archive, function (err) {
             t.error(err, 'error')
             // dat.close(function (err) {
-              // t.error(err, 'error')
-              cleanup(function (err) {
+            // t.error(err, 'error')
+            cleanup(function (err) {
+              t.error(err, 'error')
+              closeShare(function (err) {
                 t.error(err, 'error')
-                closeShare(function (err) {
-                  t.error(err, 'error')
-                  t.end()
-                })
+                t.end()
               })
+            })
             // })
           })
         }
@@ -265,8 +265,8 @@ function shareFixtures (opts, cb) {
 
     function close (cb) {
       // dat.close(function (err) {
-        cb(err)
-        // rimraf if we need it?
+      cb(err)
+      // rimraf if we need it?
       // })
     }
   })

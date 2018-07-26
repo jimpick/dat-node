@@ -1,7 +1,5 @@
 var fs = require('fs')
 var path = require('path')
-var mirror = require('mirror-folder')
-var ram = require('random-access-memory')
 var Dat = require('..')
 
 var key = process.argv[2]
@@ -22,6 +20,6 @@ Dat(dest, {key: key}, function (err, dat) {
   dat.archive.db.source.on('sync', function () {
     console.log('source sync')
   })
-  
+
   console.log(`Downloading: ${dat.key.toString('hex')}\n`)
 })
