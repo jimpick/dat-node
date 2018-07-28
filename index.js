@@ -100,7 +100,9 @@ function createDat (dirOrStorage, opts, cb) {
     })
 
     function createArchive () {
-      assert(opts.legacy, 'Only legacy mode currently supported')
+      if (!opts.disableLegacyAssert) {
+        assert(opts.legacy, 'Only legacy mode currently supported')
+      }
       // FIXME: Figure out how to autodetect legacy mode
       archive = opts.legacy === true ? hyperdriveLegacy(storage, key, opts)
         : hyperdrive(storage, key, opts)
