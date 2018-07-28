@@ -15,7 +15,7 @@ test('misc: clean old test', function (t) {
 
 test('misc: empty dat folder ok', function (t) {
   fs.mkdir(path.join(fixtures, '.dat'), function () {
-    Dat(fixtures, function (err, dat) {
+    Dat(fixtures, {legacy: true}, function (err, dat) {
       t.error(err, 'no error')
       rimraf.sync(path.join(fixtures, '.dat'))
       t.end()
@@ -26,7 +26,7 @@ test('misc: empty dat folder ok', function (t) {
 test('misc: existing invalid dat folder', function (t) {
   fs.mkdir(path.join(fixtures, '.dat'), function () {
     fs.writeFile(path.join(fixtures, '.dat', '0101.db'), '', function () {
-      Dat(fixtures, function (err, dat) {
+      Dat(fixtures, {legacy: true}, function (err, dat) {
         t.ok(err, 'errors')
         rimraf.sync(path.join(fixtures, '.dat'))
         t.end()
@@ -37,7 +37,7 @@ test('misc: existing invalid dat folder', function (t) {
 
 test('misc: non existing invalid dat path', function (t) {
   t.throws(function () {
-    Dat('/non/existing/folder/', function () {})
+    Dat('/non/existing/folder/', {legacy: true}, function () {})
   })
   t.end()
 })
@@ -61,11 +61,11 @@ test('misc: open error', function (t) {
 
 test('misc: expose .key', function (t) {
   var key = Buffer.alloc(32)
-  Dat(process.cwd(), { key: key, temp: true }, function (err, dat) {
+  Dat(process.cwd(), {legacy: true, key: key, temp: true}, function (err, dat) {
     t.error(err, 'error')
     t.deepEqual(dat.key, key)
 
-    Dat(fixtures, { temp: true }, function (err, dat) {
+    Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
       t.error(err, 'error')
       t.notDeepEqual(dat.key, key)
       dat.close(function (err) {
@@ -79,12 +79,12 @@ test('misc: expose .key', function (t) {
 test('misc: expose .writable', function (t) {
   tmpDir(function (err, downDir, cleanup) {
     t.error(err, 'error')
-    Dat(fixtures, function (err, shareDat) {
+    Dat(fixtures, {legacy: true}, function (err, shareDat) {
       t.error(err, 'error')
       t.ok(shareDat.writable, 'is writable')
       shareDat.joinNetwork()
 
-      Dat(downDir, {key: shareDat.key}, function (err, downDat) {
+      Dat(downDir, {legacy: true, key: shareDat.key}, function (err, downDat) {
         t.error(err, 'error')
         t.notOk(downDat.writable, 'not writable')
 
@@ -108,7 +108,7 @@ test('misc: expose swarm.connected', function (t) {
   tmpDir(function (err, downDir, cleanup) {
     t.error(err, 'error')
     var downDat
-    Dat(fixtures, { temp: true }, function (err, shareDat) {
+    Dat(fixtures, {legacy: true, temp: true}, function (err, shareDat) {
       t.error(err, 'error')
 
       t.doesNotThrow(shareDat.leave, 'leave before join should be noop')
@@ -132,7 +132,7 @@ test('misc: expose swarm.connected', function (t) {
         })
       })
 
-      Dat(downDir, { key: shareDat.key, temp: true }, function (err, dat) {
+      Dat(downDir, {legacy: true, key: shareDat.key, temp: true}, function (err, dat) {
         t.error(err, 'error')
         dat.joinNetwork()
         downDat = dat
@@ -142,7 +142,7 @@ test('misc: expose swarm.connected', function (t) {
 })
 
 test('misc: close twice errors', function (t) {
-  Dat(fixtures, {temp: true}, function (err, dat) {
+  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
     t.error(err, 'error')
     dat.close(function (err) {
       t.error(err, 'error')
@@ -155,7 +155,7 @@ test('misc: close twice errors', function (t) {
 })
 
 test('misc: close twice sync errors', function (t) {
-  Dat(fixtures, {temp: true}, function (err, dat) {
+  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
     t.error(err, 'error')
     dat.close(function (err) {
       t.error(err, 'error')
@@ -191,12 +191,12 @@ test('misc: make dat with random key and open again', function (t) {
   tmpDir(function (err, downDir, cleanup) {
     t.error(err, 'error')
     var key = '6161616161616161616161616161616161616161616161616161616161616161'
-    Dat(downDir, {key: key}, function (err, dat) {
+    Dat(downDir, {legacy: true, key: key}, function (err, dat) {
       t.error(err, 'error')
       t.ok(dat, 'has dat')
       dat.close(function (err) {
         t.error(err, 'error')
-        Dat(downDir, {key: key}, function (err, dat) {
+        Dat(downDir, {legacy: true, key: key}, function (err, dat) {
           t.error(err, 'error')
           t.ok(dat, 'has dat')
           t.end()

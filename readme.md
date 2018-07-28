@@ -226,6 +226,10 @@ Most options are passed directly to the module you're using (e.g. `dat.importFil
 opts = {
   key: '<dat-key>', // existing key to create archive with or resume
   temp: false, // Use random-access-memory as the storage.
+  legacy: undefined, // undefined -> use hyperdrive (multiwriter) when creating,
+                                     otherwise detect uniwriter/multiwriter
+                     // true -> Use hyperdrive-legacy (uniwriter)
+                     // false -> Use hyperdrive (multiwriter)
 
   // Hyperdrive options
   sparse: false // download only files you request

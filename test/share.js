@@ -26,7 +26,7 @@ test('share: prep', function (t) {
 })
 
 test('share: create dat with default ops', function (t) {
-  Dat(fixtures, function (err, dat) {
+  Dat(fixtures, {legacy: true}, function (err, dat) {
     t.error(err, 'cb err okay')
     t.ok(dat.path === fixtures, 'correct directory')
     t.ok(dat.archive, 'has archive')
@@ -85,7 +85,7 @@ test('share: create dat with default ops', function (t) {
 })
 
 test('share: resume with .dat folder', function (t) {
-  Dat(fixtures, function (err, dat) {
+  Dat(fixtures, {legacy: true}, function (err, dat) {
     t.error(err, 'cb without error')
     t.ok(dat.writable, 'dat still writable')
     t.ok(dat.resumed, 'resume flag set')
@@ -113,12 +113,12 @@ test('share: resume with .dat folder', function (t) {
 
 test('share: resume with empty .dat folder', function (t) {
   var emptyPath = path.join(__dirname, 'empty')
-  Dat(emptyPath, function (err, dat) {
+  Dat(emptyPath, {legacy: true}, function (err, dat) {
     t.error(err, 'cb without error')
     t.false(dat.resumed, 'resume flag false')
 
     dat.close(function () {
-      Dat(emptyPath, function (err, dat) {
+      Dat(emptyPath, {legacy: true}, function (err, dat) {
         t.error(err, 'cb without error')
         t.ok(dat.resumed, 'resume flag set')
 
@@ -157,7 +157,7 @@ test('share: resume with empty .dat folder', function (t) {
 
 if (!process.env.TRAVIS) {
   test('share: live - editing file', function (t) {
-    Dat(fixtures, function (err, dat) {
+    Dat(fixtures, {legacy: true}, function (err, dat) {
       t.ifError(err, 'error')
 
       var importer = dat.importFiles({ watch: true }, function (err) {
@@ -187,7 +187,7 @@ if (!process.env.TRAVIS) {
 
   test('share: live resume & create new file', function (t) {
     var newFile = path.join(fixtures, 'new.txt')
-    Dat(fixtures, function (err, dat) {
+    Dat(fixtures, {legacy: true}, function (err, dat) {
       t.error(err, 'error')
       t.ok(dat.resumed, 'was resumed')
 
@@ -231,7 +231,7 @@ test('share: cleanup', function (t) {
 })
 
 test('share: dir storage and opts.temp', function (t) {
-  Dat(fixtures, {temp: true}, function (err, dat) {
+  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
     t.error(err, 'error')
     t.false(dat.resumed, 'resume flag false')
 
@@ -250,7 +250,7 @@ test('share: dir storage and opts.temp', function (t) {
 })
 
 test('share: ram storage & import other dir', function (t) {
-  Dat(ram, function (err, dat) {
+  Dat(ram, {legacy: true}, function (err, dat) {
     t.error(err, 'error')
     t.false(dat.resumed, 'resume flag false')
 
