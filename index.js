@@ -74,13 +74,13 @@ function createDat (dirOrStorage, opts, cb) {
           var validSleep = (files && files.length && files.indexOf('key') > -1)
           var badDat = !(noDat || validSleep)
 
-          if ((noDat || validSleep) && createAfterValid) return create()
+          if ((noDat || validSleep) && createAfterValid) return create(true)
           else if (badDat) return cb(oldError)
 
           if (err && !createIfMissing) return cb(missingError)
           else if (!err && errorIfExists) return cb(existsError)
 
-          return create()
+          return create(true)
         })
       } else {
         // old format
