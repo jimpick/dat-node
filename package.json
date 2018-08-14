@@ -1,6 +1,6 @@
 {
   "name": "@jimpick/dat-node",
-  "version": "3.5.11-6",
+  "version": "3.5.11-7",
   "description": "Build node applications with Dat archives on the file system.",
   "main": "index.js",
   "scripts": {
