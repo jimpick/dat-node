@@ -19,7 +19,7 @@ module.exports = createDat
  * @param {Boolean} [opts.createIfMissing = true] - Create storage if it does not exit.
  * @param {Boolean} [opts.errorIfExists = false] - Error if storage exists.
  * @param {Boolean} [opts.temp = false] - Use random-access-memory for temporary storage
- * @param {Boolean} [opts.legacy = false] - Force hyperdrive-legacy archive (uniwriter)
+ * @param {Boolean} [opts.stagingNewFormat = false] - Use new hyperdrive (multiwriter)
  * @param {function(err, dat)} cb - callback that returns `Dat` instance
  * @see defaultStorage for storage information
  */
@@ -100,19 +100,20 @@ function createDat (dirOrStorage, opts, cb) {
     })
 
     function createArchive () {
-      if (!opts.disableLegacyAssert) {
-        assert(opts.legacy, 'Only legacy mode currently supported')
-      }
-      // FIXME: Figure out how to autodetect legacy mode
-      archive = opts.legacy === true ? hyperdriveLegacy(storage, key, opts)
-        : hyperdrive(storage, key, opts)
+      archive = opts.stagingNewFormat ? hyperdrive(storage, key, opts)
+        : hyperdriveLegacy(storage, key, opts)
       archive.on('error', cb)
       archive.ready(function () {
-        debug('archive ready. version:', archive.version)
-        if (hasDat || (archive.metadata.has(0) && archive.version)) {
-          archive.resumed = true
+        if (opts.stagingNewFormat) {
+          debug('archive ready')
+          if (archive.feeds[0].length) archive.resumed = true
         } else {
-          archive.resumed = false
+          debug('archive ready. version:', archive.version)
+          if (hasDat || (archive.metadata.has(0) && archive.version)) {
+            archive.resumed = true
+          } else {
+            archive.resumed = false
+          }
         }
         archive.removeListener('error', cb)
 
