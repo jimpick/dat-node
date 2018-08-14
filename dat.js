@@ -95,11 +95,12 @@ Dat.prototype.join = function (opts, cb) {
 
   var netOpts = xtend({
     stream: function (peer) {
-      var stream = self.archive.replicate({
-        upload: !(opts.upload === false),
-        download: !self.writable && opts.download,
-        live: !opts.end
-      })
+      var replicateOpts = {live: !opts.end}
+      if (!self.options.stagingNewFormat) {
+        replicateOpts.upload = !(opts.upload === false)
+        replicateOpts.download = !self.writable && opts.download
+      }
+      var stream = self.archive.replicate(replicateOpts)
       stream.on('close', function () {
         debug('Stream close')
       })

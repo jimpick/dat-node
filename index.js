@@ -44,6 +44,7 @@ function createDat (dirOrStorage, opts, cb) {
     dir: dir,
     latest: true
   }, opts)
+  if (opts.stagingNewFormat) opts.files = dir
 
   if (!opts.dir) return create() // TODO: check other storage
   checkIfExists()
