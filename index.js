@@ -44,6 +44,7 @@ function createDat (dirOrStorage, opts, cb) {
     dir: dir,
     latest: true
   }, opts)
+  if (opts.stagingNewFormat) opts.files = dir
 
   if (!opts.dir) return create() // TODO: check other storage
   checkIfExists()
@@ -67,16 +68,33 @@ function createDat (dirOrStorage, opts, cb) {
       // TODO: omg please make this less confusing.
       var noDat = !!(err || !files.length)
       hasDat = !noDat
-      var validSleep = (files && files.length && files.indexOf('metadata.key') > -1)
-      var badDat = !(noDat || validSleep)
+      if (files.indexOf('source') > -1) {
+        // hyperdb detected - new format
+        fs.readdir(path.join(opts.dir, '.dat', 'source'), function (err, files) {
+          var validSleep = (files && files.length && files.indexOf('key') > -1)
+          var badDat = !(noDat || validSleep)
 
-      if ((noDat || validSleep) && createAfterValid) return create()
-      else if (badDat) return cb(oldError)
+          if ((noDat || validSleep) && createAfterValid) return create()
+          else if (badDat) return cb(oldError)
 
-      if (err && !createIfMissing) return cb(missingError)
-      else if (!err && errorIfExists) return cb(existsError)
+          if (err && !createIfMissing) return cb(missingError)
+          else if (!err && errorIfExists) return cb(existsError)
 
-      return create()
+          return create()
+        })
+      } else {
+        // old format
+        var validSleep = (files && files.length && files.indexOf('metadata.key') > -1)
+        var badDat = !(noDat || validSleep)
+
+        if ((noDat || validSleep) && createAfterValid) return create()
+        else if (badDat) return cb(oldError)
+
+        if (err && !createIfMissing) return cb(missingError)
+        else if (!err && errorIfExists) return cb(existsError)
+
+        return create()
+      }
     })
   }
 
@@ -84,8 +102,9 @@ function createDat (dirOrStorage, opts, cb) {
    * Create the archive and call `archive.ready()` before callback.
    * Set `archive.resumed` if archive has a content feed.
    * @private
+   * @param {Boolean} [newFormat = false] - use hyperdb
    */
-  function create () {
+  function create (newFormat) {
     if (dir && !opts.temp && !key && (opts.indexing !== false)) {
       // Only set opts.indexing if storage is dat-storage
       // TODO: this should be an import option instead, https://github.com/mafintosh/hyperdrive/issues/160
@@ -100,7 +119,8 @@ function createDat (dirOrStorage, opts, cb) {
     })
 
     function createArchive () {
-      archive = opts.stagingNewFormat ? hyperdrive(storage, key, opts)
+      archive = (newFormat || opts.stagingNewFormat)
+        ? hyperdrive(storage, key, opts)
         : hyperdriveLegacy(storage, key, opts)
       archive.on('error', cb)
       archive.ready(function () {
