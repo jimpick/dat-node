@@ -61,6 +61,7 @@ function Dat (archive, opts) {
     writable: {
       enumerable: true,
       get: function () {
+        if (self.options.stagingNewFormat) return true
         return self.archive.metadata.writable
       }
     },
