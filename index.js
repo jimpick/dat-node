@@ -68,7 +68,7 @@ function createDat (dirOrStorage, opts, cb) {
       // TODO: omg please make this less confusing.
       var noDat = !!(err || !files.length)
       hasDat = !noDat
-      if (files.indexOf('source') > -1) {
+      if (files && files.indexOf('source') > -1) {
         // hyperdb detected - new format
         fs.readdir(path.join(opts.dir, '.dat', 'source'), function (err, files) {
           var validSleep = (files && files.length && files.indexOf('key') > -1)
