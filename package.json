@@ -1,6 +1,6 @@
 {
   "name": "@jimpick/dat-node",
-  "version": "3.5.11-7",
+  "version": "3.5.11-9",
   "description": "Build node applications with Dat archives on the file system.",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
   "author": "Joe Hand <joe@hand.email>",
   "license": "MIT",
   "dependencies": {
-    "@jimpick/dat-storage": "^1.0.4-1",
+    "@jimpick/dat-storage": "^1.0.4-2",
     "@jimpick/hyperdrive": "^9.12.3-1",
     "@jimpick/hyperdrive-legacy": "^9.14.0-1",
     "dat-ignore": "^2.1.1",

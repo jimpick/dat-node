@@ -10,7 +10,7 @@ var fixtures = path.join(__dirname, 'fixtures')
 
 test('importing: import two directories at same time', function (t) {
   rimraf.sync(path.join(fixtures, '.dat')) // for previous failed tests
-  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
+  Dat(fixtures, {temp: true}, function (err, dat) {
     t.error(err, 'error')
     var pending = 2
     dat.importFiles(function (err) {
@@ -35,7 +35,7 @@ test('importing: import two directories at same time', function (t) {
 
 test('importing: custom ignore extends default (string)', function (t) {
   rimraf.sync(path.join(fixtures, '.dat')) // for previous failed tests
-  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
+  Dat(fixtures, {temp: true}, function (err, dat) {
     t.error(err)
     dat.importFiles({ ignore: '**/*.js' }, function () {
       var shouldIgnore = dat.options.importer.ignore
@@ -50,7 +50,7 @@ test('importing: custom ignore extends default (string)', function (t) {
 })
 
 test('importing: custom ignore extends default (array)', function (t) {
-  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
+  Dat(fixtures, {temp: true}, function (err, dat) {
     t.error(err)
     dat.importFiles({ ignore: ['super_secret_stuff/*', '**/*.txt'] }, function () {
       var shouldIgnore = dat.options.importer.ignore
@@ -67,7 +67,7 @@ test('importing: custom ignore extends default (array)', function (t) {
 })
 
 test('importing: ignore hidden option turned off', function (t) {
-  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
+  Dat(fixtures, {temp: true}, function (err, dat) {
     t.error(err)
     dat.importFiles({ ignoreHidden: false }, function () {
       var shouldIgnore = dat.options.importer.ignore
@@ -84,7 +84,7 @@ test('importing: ignore hidden option turned off', function (t) {
 })
 
 test('importing: ignore dirs option turned off', function (t) {
-  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
+  Dat(fixtures, {temp: true}, function (err, dat) {
     t.error(err)
     dat.importFiles({ ignoreDirs: false }, function () {
       var stream = dat.archive.history()
@@ -107,7 +107,7 @@ test('importing: ignore dirs option turned off', function (t) {
 })
 
 test('importing: import with options but no callback', function (t) {
-  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
+  Dat(fixtures, {temp: true}, function (err, dat) {
     t.error(err)
     var importer = dat.importFiles({ dryRun: true })
     importer.on('error', function (err) {
@@ -124,7 +124,7 @@ test('importing: import with options but no callback', function (t) {
 test('importing: import with .datignore', function (t) {
   fs.writeFileSync(path.join(fixtures, '.datignore'), 'ignoreme.txt')
   fs.writeFileSync(path.join(fixtures, 'ignoreme.txt'), 'hello world')
-  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
+  Dat(fixtures, {temp: true}, function (err, dat) {
     t.error(err)
     var importer = dat.importFiles(function (err) {
       t.error(err)
@@ -147,7 +147,7 @@ test('importing: import with .datignore', function (t) {
 test('importing: import with opts.useDatIgnore false', function (t) {
   fs.writeFileSync(path.join(fixtures, '.datignore'), 'ignoreme.txt')
   fs.writeFileSync(path.join(fixtures, 'ignoreme.txt'), 'hello world')
-  Dat(fixtures, {legacy: true, temp: true}, function (err, dat) {
+  Dat(fixtures, {temp: true}, function (err, dat) {
     t.error(err)
     var fileImported = false
     var importer = dat.importFiles({useDatIgnore: false}, function (err) {
@@ -177,7 +177,7 @@ test('importing: import from hidden folder src', function (t) {
     dir = path.join(dir, '.hidden')
     fs.mkdirSync(dir)
     fs.writeFileSync(path.join(dir, 'hello.txt'), 'hello world')
-    Dat(dir, {legacy: true, temp: true}, function (err, dat) {
+    Dat(dir, {temp: true}, function (err, dat) {
       t.error(err, 'no error')
       dat.importFiles(function (err) {
         t.error(err)

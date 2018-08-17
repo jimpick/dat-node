@@ -35,7 +35,6 @@ function createDat (dirOrStorage, opts, cb) {
   var archive
   var key = opts.key
   var dir = (typeof dirOrStorage === 'string') ? dirOrStorage : null
-  var storage = datStore(dirOrStorage, opts)
   var createIfMissing = !(opts.createIfMissing === false)
   var errorIfExists = opts.errorIfExists || false
   var hasDat = false
@@ -105,6 +104,7 @@ function createDat (dirOrStorage, opts, cb) {
    * @param {Boolean} [newFormat = false] - use hyperdb
    */
   function create (newFormat) {
+    if (newFormat) opts.stagingNewFormat = true
     if (dir && !opts.temp && !key && (opts.indexing !== false)) {
       // Only set opts.indexing if storage is dat-storage
       // TODO: this should be an import option instead, https://github.com/mafintosh/hyperdrive/issues/160
@@ -119,8 +119,13 @@ function createDat (dirOrStorage, opts, cb) {
     })
 
     function createArchive () {
-      archive = (newFormat || opts.stagingNewFormat)
-        ? hyperdrive(storage, key, opts)
+      var storage
+      try {
+        storage = datStore(dirOrStorage, opts)
+      } catch (e) {
+        return cb(e)
+      }
+      archive = opts.stagingNewFormat ? hyperdrive(storage, key, opts)
         : hyperdriveLegacy(storage, key, opts)
       archive.on('error', cb)
       archive.ready(function () {
