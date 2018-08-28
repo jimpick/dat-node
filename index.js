@@ -43,7 +43,6 @@ function createDat (dirOrStorage, opts, cb) {
     dir: dir,
     latest: true
   }, opts)
-  if (opts.stagingNewFormat) opts.files = dir
 
   if (!opts.dir) return create() // TODO: check other storage
   checkIfExists()
@@ -125,6 +124,7 @@ function createDat (dirOrStorage, opts, cb) {
       } catch (e) {
         return cb(e)
       }
+      if (opts.stagingNewFormat) opts.files = opts.dir
       archive = opts.stagingNewFormat ? hyperdrive(storage, key, opts)
         : hyperdriveLegacy(storage, key, opts)
       archive.on('error', cb)
