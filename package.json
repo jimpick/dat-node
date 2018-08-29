@@ -1,6 +1,6 @@
 {
   "name": "@jimpick/dat-node-hyperdb-only",
-  "version": "3.5.8-2",
+  "version": "3.5.8-3",
   "description": "Build node applications with Dat archives on the file system.",
   "main": "index.js",
   "scripts": {
