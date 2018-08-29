@@ -270,7 +270,7 @@ function shareFixtures (opts, cb) {
 
     function close (cb) {
       // dat.close(function (err) {
-      cb(err)
+      // cb(err)
       // rimraf if we need it?
       // })
     }

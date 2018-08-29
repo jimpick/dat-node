@@ -1,6 +1,6 @@
 {
   "name": "@jimpick/dat-node-hyperdb-only",
-  "version": "3.5.8-1",
+  "version": "3.5.8-2",
   "description": "Build node applications with Dat archives on the file system.",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   "author": "Joe Hand <joe@hand.email>",
   "license": "MIT",
   "dependencies": {
-    "@jimpick/hyperdrive": "^9.12.3-1",
+    "@jimpick/hyperdrive": "^9.12.3-2",
     "dat-ignore": "^2.0.0",
     "dat-link-resolve": "^2.0.0",
     "dat-swarm-defaults": "^1.0.0",
