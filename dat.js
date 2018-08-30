@@ -177,11 +177,6 @@ Dat.prototype.importFiles = function (src, opts, cb) {
   if (!this.writable) throw new Error('Must be archive owner to import files.')
   if (typeof src !== 'string') return this.importFiles('', src, opts)
   if (typeof opts === 'function') return this.importFiles(src, {}, opts)
-  if (opts.stagingNewFormat) {
-    // hyperdb maps files directly, no need to import
-    process.nextTick(cb)
-    return {hyperdb: true}
-  }
 
   var self = this
   src = src && src.length ? src : self.path
