@@ -2,8 +2,8 @@ var assert = require('assert')
 var fs = require('fs')
 var path = require('path')
 var xtend = require('xtend')
-var hyperdriveLegacy = require('@jimpick/hyperdrive-legacy')
-var hyperdrive = require('@jimpick/hyperdrive') // eslint-disable-line no-unused-vars
+var hyperdrive = require('@jimpick/hyperdrive')
+var hyperdriveNext = require('@jimpick/hyperdrive-next') // eslint-disable-line no-unused-vars
 var resolveDatLink = require('dat-link-resolve')
 var debug = require('debug')('dat-node')
 var datStore = require('./lib/storage')
@@ -125,8 +125,8 @@ function createDat (dirOrStorage, opts, cb) {
         return cb(e)
       }
       if (opts.stagingNewFormat) opts.files = opts.dir
-      archive = opts.stagingNewFormat ? hyperdrive(storage, key, opts)
-        : hyperdriveLegacy(storage, key, opts)
+      archive = opts.stagingNewFormat ? hyperdriveNext(storage, key, opts)
+        : hyperdrive(storage, key, opts)
       archive.on('error', cb)
       archive.ready(function () {
         if (opts.stagingNewFormat) {
