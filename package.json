@@ -1,6 +1,6 @@
 {
   "name": "@jimpick/dat-node",
-  "version": "3.5.11-22",
+  "version": "3.5.11-23",
   "description": "Build node applications with Dat archives on the file system.",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   "dependencies": {
     "@jimpick/dat-storage": "^1.0.4-3",
     "@jimpick/hyperdrive": "^9.14.0-1",
-    "@jimpick/hyperdrive-next": "^9.12.3-6",
+    "@jimpick/hyperdrive-next": "^9.12.3-7",
     "@jimpick/hyperdrive-network-speed": "^2.1.0-2",
     "@jimpick/mirror-folder": "^3.0.0-1",
     "dat-ignore": "^2.1.1",
